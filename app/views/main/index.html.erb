@@ -1,3 +1,5 @@
 <h1>힘세고 강한 아침, 만일 내게 물어본다면 나는 왈도.</h1>
 
-
+<% @form_for(@phrase) do |p| %>
+<%= p.text_field :input %> <%= p.submit %>
+<% end %>
