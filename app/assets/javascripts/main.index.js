@@ -28,3 +28,30 @@ function waldorize(){
 
 
 
+$(function(){
+	$(document).on('click', '.deshift-button', deshift);
+});
+
+
+function deshift(){
+	var $inputField = $('#waldorize-field');
+	var inputText=  $inputField.val();
+	var $outputField = $('#waldorized-field');
+
+	$.ajax({
+		url: '/phrases/deshift',
+		dataType: 'json',
+		type: 'get',
+		data: {input_text: inputText},
+		success: function(res){
+			if(res.success){
+				$outputField.text(res.deshifted);
+			} else {
+				alert("쒸프트키까 꼐쏚 안 빠쪄요!");
+			}
+		},
+		error: function(e){
+			alert('쥬금');
+		}
+	});
+}

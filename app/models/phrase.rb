@@ -9,14 +9,16 @@ class Phrase < ActiveRecord::Base
 	def self.deshift(str)
 		res = ""
 		str.chars.each do |c|
-			print c
-			c.bytes.each do |b|
-				print b.to_s(16)
-				if c.count == 1 then
-					return str
-				end
-			end
+#			print c
+#			c.bytes.each do |b|
+#				print b.to_s(16)
+#				if c.count == 1 then
+#					return str
+#				end
+#			end
+        c = shiftchar(c)
 		end
+		return str
 	end
 
 
@@ -59,17 +61,84 @@ class Phrase < ActiveRecord::Base
 	def self.shiftchar(char)
 		case kind(char)
 		when "한글" then
+		    char.bytes.each do |b|
+		      if (b == 0x1101 || b == 0x1104 || b == 0x1108 || b ==0x110A || b == 0x110D) then
+		          b = b - 0x1
+		      end
+		      if (b == 0x1164 || b == 0x1168) then
+		          b = b - 0x2
+		      end
+		    end
 			return char
 		when "모름" then
 			return char
+		when "일반특수문자" then
+            if char == 0x26 then
+              char == 0x37
+              return char
+            end
+		    if char == 0x2B then
+		      char = 0x3D
+		      return char
+		    end
+            if char == 0x2A then
+              char == 0x38
+              return char
+            end
+            if (char >= 0x21 && char <= 0x25) then
+              char == char + 0x10
+              return char
+            end
+            if (char == 0x28) then
+              char == 0x30
+              return char
+            end
+            if char == 0x29 then
+              char == 0x39
+              return char
+            end
 		when "특수문자" then
+            if char == 0x40 then
+              char == 0x32
+              return char
+            end
+            if char == 0x5E then
+              char == 0x36
+              return char
+            end
+		    if char == 0x3C then
+		      char = 0x2C
+		      return char
+		    end
+		    if char == 0x3E then
+		      char = 0x2E
+		      return char
+		    end
+		    if char == 0x3F then
+		      char = 0x2F
+		      return char
+		    end
+		    if char == 0x3A then
+		      char = char + 0x1
+		      return char
+		    end
+		    if (char >= 0x7B && char <= 0x7D) then
+		      char = char - 0x20
+		      return char
+		    end
+		    if char == 0x5F then
+		      char = 0x2D
+		      return char
+		    end
 			return char
+		when "큰따옴표" then
+		    return 0x27
 		when "숫자" then
 			return char
 		when "소문자" then
 			return char.upcase
-		when "대문자"then
-			return char
+		when "대문자" then
+			return char + 0x20
 		end
 	end
 
