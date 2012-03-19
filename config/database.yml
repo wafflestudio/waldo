@@ -11,8 +11,6 @@ development:
   pool: 5
   username: rkdrnf
   password: dkswnsgud
-  socket: /tmp/mysql.sock
-  host: cream.wafflestudio.net
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -25,8 +23,6 @@ test:
   pool: 5
   username: rkdrnf
   password: dkswnsgud
-  socket: /tmp/mysql.sock
-  host: cream.wafflestudio.net
 
 production:
   adapter: mysql2
@@ -36,6 +32,4 @@ production:
   pool: 5
   username: rkdrnf
   password: dkswnsgud
-  socket: /tmp/mysql.sock
-  host: cream.wafflestudio.net
 
