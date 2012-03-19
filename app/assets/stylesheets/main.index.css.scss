@@ -1,0 +1,22 @@
+h1 {
+	text-align: center;
+	font-family: 'NanumBrush';
+	font-size: 55px;
+}
+
+#convert-bar {
+	width: 300px;
+	margin: 0 auto;
+	padding: 20px;
+
+	#waldorize-box {
+		padding: 10px;
+
+		#waldorize-field {
+			padding: 3px;
+			margin: 10px;
+		}
+	}
+
+	text-align: center;
+}

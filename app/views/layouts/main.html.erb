@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>왈도!</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag "style" %>
+  <%= stylesheet_link_tag "#{controller.controller_name}" %>
+  <%= stylesheet_link_tag "#{controller.controller_name}.#{controller.action_name}" %>
+  <%= javascript_include_tag "application" %>
+  <script src="http://www.google.com/jsapi"></script>
+  <%= javascript_include_tag "webfont" %>
+  <%= javascript_include_tag "#{controller.controller_name}" %>
+  <%= javascript_include_tag "#{controller.controller_name}.#{controller.action_name}" %>
+
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="wrapper">
+	<%= yield %>
+</div>
+
+</body>
+</html>

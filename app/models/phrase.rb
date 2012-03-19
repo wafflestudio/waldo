@@ -80,7 +80,7 @@ class Phrase < ActiveRecord::Base
 
 		str = swapTargetEnd(str)
 
-		print str
+		return str
 	end
 
 
@@ -112,8 +112,8 @@ class Phrase < ActiveRecord::Base
 	def self.swapTargetEnd(str)
 		strenum = str.split(" ")
 
-		target = ""
-		strend = ""
+		target = nil
+		strend = nil
 		index = 0
 		strenum.each do |s|
 			if inspectword(s) == "목적격 조사" || inspectword(s) == "목적격 조사2" then
@@ -127,12 +127,18 @@ class Phrase < ActiveRecord::Base
 			index += 1
 		end
 
-		strend[0] = powerfulEnd(strend[0])
+		if target && strend then
 
-		strenum[target.last] = strend[0]
-		strenum[strend.last] = target[0]
+			strend[0] = powerfulEnd(strend[0])
 
-		return strenum.join(" ")
+			strenum[target.last] = strend[0]
+			strenum[strend.last] = target[0]
+
+
+			return strenum.join(" ")
+		else
+			return str
+		end
 
 	end
 
@@ -167,38 +173,26 @@ class Phrase < ActiveRecord::Base
 	def self.powerfulEnd(str)
 
 		last123 = analyzeEnd(str)
-		if str[0] then
-			case str[0]
+		if last123[0] then
+			case last123[0]
 			when "하였다" then
-				return "함!"
-			when "주웠다" then
-				return "주움!"
-			when "싸웠다" then
+				return "했다."
 			end
 		else 
-			if str[1] then
-				case str[1]
-				when "했다", "한다", "하다"
-					return "함!"
-				when "웠다" then
-					return "움!"
-				when "이다" then
-					return "임!"
-				when "오다", "온다", "왔다" then
-					return "옴!"
-				when "간다", "가다", "갔다" then
-					return "감!"
-				when "가라" then 				#명령어는 '라'로 끝나는 경우가 많다. 이때는 라를 삭제하고 느낌표를 넣으면 될까?
-					return "가!"
+=begin
+	if last123[1] then
+				case last123[1]
+
 				end
 			else 
-				if str[2] then
-					case str[2]
-					when "다" then
-						return "음!"
+				if last123 then
+					case last123[2]
 					end
 				end
-			end
+			end 
+=end
 		end
+
+		return str
 	end
 end
