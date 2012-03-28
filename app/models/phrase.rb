@@ -1,5 +1,20 @@
 #encoding: utf-8
+
+
+require 'google_spreadsheet'
+
+
 class Phrase < ActiveRecord::Base
+
+	SRC_ROW = 2
+	SRC_COL = 1
+
+	DEST_ROW = 5
+
+	@@session = GoogleSpreadsheet.login("id", "password")
+
+	# First worksheet of http://spreadsheets.google.com/ccc?key=pz7XtlQC-PYx-jrVMJErTcg&hl=en
+	@@ws = @@session.spreadsheet_by_key("0AhHNBodQU76_dDQzMmJMX3JaZnM2T0hDV2VaeU9zdVE").worksheets[0]
 
 	#현호야 너한테 맡김
 
@@ -77,6 +92,8 @@ class Phrase < ActiveRecord::Base
 	# 이 위는 쉬프트키 빼고 넣는거고 이 아래는 왈도체 여기는 내가
 
 	def self.waldorize(str)
+
+		str = containSpecial(str)
 
 		str = swapTargetEnd(str)
 
@@ -194,5 +211,51 @@ class Phrase < ActiveRecord::Base
 		end
 
 		return str
+	end
+
+	def self.containSpecial(str)
+		str = str.sub("으아아아", "호옹이")
+		str = str.sub("안준형", "짱 천재")
+		str = str.sub("준형", "천재")
+		str = str.sub("제작자", "준형님")
+		str = str.sub("정원영", "http://rkdrnf.snucse.org/jwyeong")
+		str = str.sub("박준상", "http://rkdrnf.snucse.org/junsangs")
+		str = str.sub("정현호", "그냥 똑똑")
+		str = str.sub("학교가자", "휴학하자")
+	end
+
+	def self.waldorize2(input_str)
+		
+		# call my script from spreadsheet
+		@@ws[SRC_ROW,SRC_COL] = '=GoogleTranslate("' + input_str + '", "ko", "en")'
+		@@ws.save()
+
+		@@ws.reload()
+		transAgain(@@ws, SRC_ROW, SRC_COL)
+	end
+	
+
+	def self.transAgain(ws, row, col)
+		
+		str_src = ws[row, col]
+
+		str_arr = str_src.split(' ')
+
+		cell_len = str_arr.length
+
+		str_arr.each_with_index do |s, i|
+			ws[DEST_ROW, i + 1] = '=GoogleTranslate(' + '"' + s + '"' + ', "en", "ko")'
+		end
+
+		ws.save()
+		ws.reload()
+
+		str_mer_arr = []
+
+		for i in 1..cell_len do 
+			str_mer_arr << ws[DEST_ROW,i]
+		end
+
+		return str_mer_arr.join(' ');
 	end
 end

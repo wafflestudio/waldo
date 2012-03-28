@@ -10,6 +10,12 @@ gem 'therubyracer'
 gem 'mysql2'
 gem 'thin'
 
+
+# Google translation gem
+
+gem 'google-spreadsheet-ruby'
+gem 'nokogiri', '1.5.0'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

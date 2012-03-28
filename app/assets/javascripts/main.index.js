@@ -5,7 +5,7 @@ $(function(){
 
 function waldorize(){
 	var $inputField = $('#waldorize-field');
-	var inputText=  $inputField.val();
+	var inputText = $inputField.val();
 	var $outputField = $('#waldorized-field');
 
 	$.ajax({
@@ -17,6 +17,8 @@ function waldorize(){
 			if(res.success){
 				$outputField.text(res.waldorized);
 			} else {
+				console.log(res);
+
 				alert("너는 실패했다. 왈도에!");
 			}
 		},
