@@ -5,6 +5,7 @@ Waldo::Application.routes.draw do
   resources :phrases do
 	  collection do 
 		  get :waldorize
+		  get :deshift
 	  end
   end
 
